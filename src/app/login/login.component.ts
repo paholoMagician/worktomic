@@ -16,7 +16,6 @@ export class LoginComponent implements OnInit {
   public token_user: string = '';
   public dateNow: any = new Date();
 
-
   constructor( private logs: ControllerLoginService, public router: Router, public logo: LogotipoService) { }
 
   ngOnInit(): void {
@@ -27,7 +26,6 @@ export class LoginComponent implements OnInit {
     const logo = <HTMLElement> document.getElementById('logo');
     logo.innerHTML = this.logo.logo;
   }
-
 
   public arrTokens: any = [];
   getTok(token: string, username: string, option: number) {
@@ -54,8 +52,8 @@ export class LoginComponent implements OnInit {
       //console.log(m)
     })
 
-
   }
+
   public user: any = [];
   logeo() {
 
