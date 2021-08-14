@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <div class="bg-dark text-info d-flex align-items-center p-3 mb-3">
+        <mat-icon>inventory</mat-icon> Creador de clases:</div>
+    <div class="forms">
+        <label>Nombre:</label>
+        <input type="text" class="form-control" [(ngModel)]="nombre_clas" required>
+    </div>
+    <div class="forms">
+        <label>Color Etiqueta:</label>
+        <input type="color" class="form-control form-control-color" [(ngModel)]="color_clas" required>
+    </div>
+    <div class="forms">
+        <label>Asignar un código:</label>
+        <input type="text" class="form-control" [(ngModel)]="codec" required>
+    </div>
+    <div>
+        <button class="btn btn-info d-flex align-items-center mt-2" (click)="pClassTask()">
+          <mat-icon>add_circle_outline</mat-icon> Crear clase
+        </button>
+    </div>
+
+</div>

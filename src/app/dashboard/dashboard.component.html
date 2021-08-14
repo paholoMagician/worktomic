@@ -1,0 +1,217 @@
+<section class="header d-flex justify-content-between align-items-center fs-2 p-4">
+    <div class="heads bg-info d-flex align-items-center p-4 rounded-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+        <mat-icon>ballot</mat-icon> Tareas diarias
+    </div>
+    <div>
+        <app-versionamiento></app-versionamiento>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title d-flex align-items-center" id="exampleModalLabel">
+                    <mat-icon>add_task</mat-icon> Asignar tipos a las tareas.
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid d-flex align-items-center">
+                    <mat-icon> tab_unselected </mat-icon> Tarea seleccionada:
+                </div>
+                <div>
+                    <ol class="p-0">
+                        <li class="list-group-item p-2 list-group-item-dark">Nombre: &nbsp; <strong class="text-primary fst-italic fs-6">{{Task}}</strong></li>
+                    </ol>
+                </div>
+                <div>
+                    <ol class="p-0">
+                        <li class="list-group-item p-2 list-group-item-dark">Lista de clases: &nbsp;
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                   <mat-icon>link</mat-icon> &nbsp; Vincular con clase creada
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li *ngFor=" let cl of arrclassj ">
+                                        <a (click)="getClassAsign(cl.nombre_clas, cl.codec);" class="dropdown-item d-flex justify-content-lg-start align-items-center" href="javscript:void(0);">
+                                            <mat-icon [ngStyle]="{'color':  cl.color_clas }">push_pin</mat-icon> {{cl.nombre_clas}} / COD.: {{cl.codec}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                Clase escojida: {{asign}} / COD.: {{asignCodec}}
+                            </div>
+                        </li>
+                        <li class="list-group-item p-2 d-flex justify-content-between flex-wrap list-group-item-dark">
+                            <div>
+                                <label for="ed-valor" class="d-flex align-items-center">
+                                    <mat-icon>edit</mat-icon> Editar valor de la tarea:
+                                </label>
+                                <input class="form-control" style=" width: 85px;" [(ngModel)]="rec_fin" id="ed-valor">
+                            </div>
+                            <div>
+                                <label for="ed-title" class="d-flex align-items-center">
+                                    <mat-icon>edit</mat-icon> Editar el título de la tarea:</label>
+                                <input class="form-control" [(ngModel)]="editWordsTitle" id="ed-title">
+                            </div>
+                        </li>
+                        <li class="list-group-item p-2 d-flex justify-content-between flex-wrap list-group-item-dark">
+                            <div>
+                                <label for="fcrea" class="d-flex align-items-center">
+                                  <mat-icon>edit</mat-icon> Editar fechas inicio de la tarea:
+                                </label> Fecha inicio - anterior: {{date_init | date: 'mediumDate' }}
+                                <input class="form-control" type="date" [(ngModel)]="date_init" id="fcrea">
+                            </div>
+                            <div>
+                                <label for="ffin" class="d-flex align-items-center">
+                                  <mat-icon>edit</mat-icon> Editar fecha fin de la tarea:</label> Fecha fin - anterior: {{date_fin | date: 'mediumDate' }}
+                                <input class="form-control" type="date" [(ngModel)]="date_fin" id="ffin">
+                            </div>
+                        </li>
+                        <li class="list-group-item p-2 list-group-item-dark">
+                            <label for="editWordsDes" class="d-flex align-items-center">
+                              <mat-icon>edit</mat-icon> Editar descripción de la tarea:
+                            </label>
+                            <textarea class="form-control" id="editWordsDes">
+                              {{editWordsDes}}
+                            </textarea>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="pNotesEdit(date_init, date_fin,asignCodec  )"> Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel" class="d-flex align-items-md-center">
+            <mat-icon>spoke</mat-icon> Mis configuraciones | Bienvenid(@): <strong> {{userSession}} </strong> </h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <app-session-config></app-session-config>
+        <div class="mt-3">
+            <app-manclases></app-manclases>
+        </div>
+    </div>
+</div>
+
+<div class="container table-responsive-sm">
+    <div class="d-flex align-items-center animate__animated animate__heartBeat text-info " *ngIf="boolTime">
+        <mat-icon>alarm_on</mat-icon> {{timelapse}}
+    </div>
+    <table class="table table-success table-hover table align-middle table-sm">
+        <thead>
+            <th>Título </th>
+            <th>Descripción </th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin </th>
+            <th>Estado </th>
+            <th>Rec. Financiero</th>
+            <th></th>
+            <th>Tipo</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let j of arrNotesGet" (click)="getDateCalc(j.date_notes_final); boolTime = !boolTime" id="{{j.id}}">
+                <td class='col-2'> {{ j.name_notes }} </td>
+                <td class='col-5'> {{ j.des_notes }} </td>
+                <td> {{ j.date_notes | date: 'mediumDate' }} </td>
+                <td> {{ j.date_notes_final | date: 'mediumDate' }} </td>
+                <td>
+                    <button title="Desplegar tarea" (click)='pNotes( j.id, j.name_notes, j.des_notes, j.date_notes, j.date_notes_final, 2, j.rec_fin )' mat-flat-button color="accent" style="width: 100%;">
+                        <mat-icon> outlined_flag </mat-icon>
+                    </button>
+                    <button title="Desplegar tarea" (click)='pNotes( j.id, j.name_notes, j.des_notes, j.date_notes, j.date_notes_final, 1, j.rec_fin )' mat-flat-button color="primary" style="width: 100%; background-color: rgb(29, 226, 95) !important;">
+                        <mat-icon> outlined_flag </mat-icon>
+                    </button>
+                </td>
+                <td>
+                    $..{{j.rec_fin | number: '1.2' }}
+                </td>
+                <td class="btnDel" style="width: 80px;" (click)="dNotes(j.id)">
+                    <mat-icon>remove_circle_outline</mat-icon>
+                </td>
+                <td>
+                    <button class="btn  d-flex align-items-center" [ngStyle]="{'background': j.color_clas, 'color': 'white'}" (click)="getDataTask(j.name_notes); saveLocalData( j.id, j.name_notes, j.des_notes, j.date_notes, j.date_notes_final, 0, j.rec_fin, '', '' )" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                      <mat-icon>view_list</mat-icon> {{j.tag_class}}
+                    </button>
+                </td>
+                <td [ngStyle]="{'background': j.color_clas}"></td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<!-- <hr> <span class="text-info d-flex justify-content-center align-items-center mb-3 "> <mat-icon>paid</mat-icon> &nbsp; Recursos financieros por clase de tareas </span>
+<section class="tags d-flex justify-content-around align-items-center flex-wrap" id="sumsSec"> -->
+<!-- [ngStyle]="{'background': mcl.color_clas}" -->
+
+<!-- Cod.: {{ mcl.codec }} <br> Total: $.. <strong class="text-info fs-4"> {{ mcl.sumatoria_total }} </strong> -->
+<!--
+</section> -->
+<hr>
+
+<div class=" d-flex justify-content-between align-items-lg-start flex-wrap ">
+
+    <div class="tableAprob container d-flex justify-content-between ">
+        <app-finished-works class="w-100"></app-finished-works>
+    </div>
+
+    <div class="tableAprob container d-flex justify-content-between ">
+        <app-lated-worked class="w-100"></app-lated-worked>
+    </div>
+
+</div>
+<div class="container-fluid p-3 d-flex juastify-content-between align-items-center">
+    <div class="ds d-flex justify-content-center flex-column bg-dark" cdkDrag>
+        <label class="d-flex align-items-center">
+          <mat-icon>ballot</mat-icon> Añadir Tarea.
+        </label>
+        <hr>
+        <div>
+            <label> Título Tarea: </label>
+            <input type="text" [(ngModel)]="titulo_mod" class="form-control">
+        </div>
+        <div>
+            <label> Descripción de la Tarea: </label>
+            <textarea class="form-control" cols="40" rows="6" [(ngModel)]="descrip_mod"></textarea>
+        </div>
+        <div class="d-flex justify-content-between align-items-end">
+            <div style="width: 135px;">
+                <label> Fecha inicial: </label>
+                <input class="form-control" type="date" [(ngModel)]="date_mod">
+            </div>
+            <div style="width: 135px; ">
+                <label> Fecha Final: </label>
+                <input class="form-control" type="date" [(ngModel)]="date_mod_fin">
+            </div>
+            <div style="width: 75px;">
+                <label> Rec. financiero: </label>
+                <input class="form-control  fs-6" type="number" [(ngModel)]="rec_fin">
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-info d-flex align-items-center mt-2 " (click)="saveNotes()">
+              <mat-icon> add_circle_outline </mat-icon> Crear
+            </button>
+        </div>
+        <div class="example-handle" cdkDragHandle>
+            <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+              <path d="M0 0h24v24H0z" fill="none"></path>
+            </svg>
+        </div>
+    </div>
+</div>
+
+
+<!-- <button class="btn btn-warning">Crear nota</button> -->

@@ -1,0 +1,18 @@
+.btnDel {
+    transition: ease all 0.5s;
+}
+
+.btnDel:hover {
+    transition: ease all 0.5s;
+    color: orangered;
+    cursor: pointer;
+}
+
+thead {
+    background-color: rgb(243, 222, 64);
+    color: #171717;
+}
+
+th {
+    padding: 10px;
+}
